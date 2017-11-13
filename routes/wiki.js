@@ -28,27 +28,56 @@ router.get('/:urlTitle', (req, res, next) => {
             urlTitle: req.params.urlTitle
         }
     }).then (data => {
-        //res.json(data);
-        console.log(data);
-        //console.log(Object.keys(data));
-        //console.log(data.page.dataValues);
-        res.render('wikipage', {page: data[0]});
+        (User.findOne({
+            where: {
+                id: data[0].authorId
+            }
+        }))
+        .then(userData => {
+            var singlePage = {
+                page: data[0],
+                name: userData.name,
+                email: userData.email
+            }
+            res.render('wikipage', {
+                singlePage
+            });
+        })
+
     }).catch (next);
 
 });
 
 router.post('/', (req, res, next) => {
+    console.log(req.body.email)
+    var user = User.findOrCreate({
+        where: {
+            name: req.body.aName,
+            email: req.body.aEmail
+        }
+    })
+    .spread((userResult, userCreated)=> {
+        //console.log( "userResult", userResult)
+       // console.log( "userCreated", userCreated)
 
-    var page = Page.build({
-        title: req.body.title,
-        content: req.body.content,
-        status: req.body.status
-    });
+        var page = Page.build({
+            title: req.body.title,
+            content: req.body.content,
+            status: req.body.status
+        });
 
-    page.save()
+        return page.save()
+        .then(data => {
+            return page.setAuthor(userResult)
+        })
+    })
+
     .then(data => {
         res.redirect(data.route);
     }).catch (next);
+
+
+
 
 });
 

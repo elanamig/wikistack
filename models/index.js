@@ -41,7 +41,7 @@ const Page = db.define('page', {
         return '/wiki/'+this.getDataValue('urlTitle');
       }
     }
-  
+
 
 
 
@@ -62,6 +62,8 @@ const User = db.define('user', {
   }
   }
 })
+
+Page.belongsTo(User, { as: 'author' });
 
 module.exports = {
   db,

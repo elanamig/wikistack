@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
 {% block content %}
- 
-  <h3>{{page.urlTitle}} <small> (<a href="{{page.urlTitle}}/similar">Similar</a>)</small></h3>
-  <h4>by <a href="PLACEHOLDER-AUTHOR-URL">PLACEHOLDER AUTHOR NAME</a></h4>
+
+  <h3>{{singlePage.page.urlTitle}} <small> (<a href="{{singlePage.page.urlTitle}}/similar">Similar</a>)</small></h3>
+  <h4>by <a href="../users/{{singlePage.page.authorId}}">{{singlePage.name}}</a></h4>
   <div>PLACEHOLDER TAG LIST</div>
   <hr/>
-  <div>PLACEHOLDER AUTHOR NAME WITH LINK TO AUTHOR PAGE</div>
-  <div class="page-body">{{page.content}}</div>
+  <div><a href="../users/{{singlePage.page.authorId}}">{{singlePage.name}}</a></div>
+  <div class="page-body">{{singlePage.page.content}}</div>
   <hr/>
-  <a href="{{page.urlTitle}}/edit" class="btn btn-primary">edit this page</a>
-  <a href="{{page.urlTitle}}/delete" class="btn btn-danger">delete this page</a>
+  <a href="{{singelPage.page.urlTitle}}/edit" class="btn btn-primary">edit this page</a>
+  <a href="{{singlePage.page.urlTitle}}/delete" class="btn btn-danger">delete this page</a>
 {% endblock %}
