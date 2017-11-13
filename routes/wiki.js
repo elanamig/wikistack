@@ -18,7 +18,26 @@ router.get('/add', (req, res) => {
     res.render('addpage');
 });
 
-router.post('/', (req, res) => {
+router.get('/:urlTitle', (req, res, next) => {
+    //build and execute query
+    //select * from page where urlTitle='urlTitleParam'
+    //res.json the retrieved page
+
+    Page.findAll({
+        where: {
+            urlTitle: req.params.urlTitle
+        }
+    }).then (data => {
+        //res.json(data);
+        console.log(data);
+        //console.log(Object.keys(data));
+        //console.log(data.page.dataValues);
+        res.render('wikipage', {page: data[0]});
+    }).catch (next);
+
+});
+
+router.post('/', (req, res, next) => {
 
     var page = Page.build({
         title: req.body.title,
@@ -28,8 +47,8 @@ router.post('/', (req, res) => {
 
     page.save()
     .then(data => {
-        res.render('wikipage')
-    })
+        res.redirect(data.route);
+    }).catch (next);
 
 });
 

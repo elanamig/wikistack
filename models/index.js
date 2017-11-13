@@ -20,13 +20,14 @@ const Page = db.define('page', {
   date: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
-  },
-  route: {
-    type: Sequelize.VIRTUAL,
-    get () {
-      return '/wiki/'+this.getDataValue('urlTitle');
-    }
   }
+  //,
+  // route: {
+  //   type: Sequelize.VIRTUAL,
+  //   get () {
+  //     return '/wiki/'+this.getDataValue('urlTitle');
+  //   }
+  // }
 }, {
   hooks: {
     beforeValidate: (page) => {
@@ -34,14 +35,15 @@ const Page = db.define('page', {
       page.title.replace(/ /g,"_").replace(/[^a-z0-9+]+/gi, '')
     : Math.random().toString(36).substring(2, 7);
     }
-  }
+  },
+    getterMethods: {
+      route () {
+        return '/wiki/'+this.getDataValue('urlTitle');
+      }
+    }
+  
 
-  //  { getterMethods: {
-  //     route () {
-  //       return '/wiki/'+this.getDataValue('urlTitle');
-  //     }
-  //   }
-  // }
+
 
 });
 
