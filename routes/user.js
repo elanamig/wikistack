@@ -1,3 +1,17 @@
-const router = require('express');
+const router = require('express').Router();
 
-module.exports=router;
+router.get('/', (req, res) => {
+  res.redirect('/')
+});
+
+router.get('/:id', (req, res) => {
+
+});
+
+router.post('/', (req, res) => {});
+
+router.put('/:id', (req, res) => {});
+
+router.delete('/:id', (req, res) => {});
+
+module.exports = router;

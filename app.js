@@ -1,12 +1,17 @@
 var models = require('./models');
 var server = require('express')();
-var routes = require ('./routes')
+var routes = require('./routes')
 var nunjucks = require('nunjucks');
+var bodyParser = require('body-parser');
 
 // templating boilerplate setup
 server.engine('html', nunjucks.render); // how to render html templates
 server.set('view engine', 'html'); // what file extension do our templates have
 nunjucks.configure('views', { noCache: true }); // where to find the views, caching off
+
+// body parsing middleware
+server.use(bodyParser.urlencoded({ extended: true })); // for HTML form submits
+server.use(bodyParser.json()); // would be for AJAX requests
 
 
 server.use('/', routes);

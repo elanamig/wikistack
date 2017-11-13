@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var db = new Sequelize('postgres://localhost:5432/wikistack');
+var db = new Sequelize('postgres://localhost:5432/wikistack', {loging: false});
 
 const Page = db.define('page', {
   title: {
@@ -21,13 +21,19 @@ const Page = db.define('page', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
   },
-  
   route: {
     type: Sequelize.VIRTUAL,
     get () {
       return '/wiki/'+this.getDataValue('urlTitle');
     }
-
+  }
+}, {
+  hooks: {
+    beforeValidate: (page) => {
+      page.urlTitle = page.title ?
+      page.title.replace(/ /g,"_").replace(/[^a-z0-9+]+/gi, '')
+    : Math.random().toString(36).substring(2, 7);
+    }
   }
 
   //  { getterMethods: {
@@ -36,7 +42,7 @@ const Page = db.define('page', {
   //     }
   //   }
   // }
-  
+
 });
 
 
