@@ -20,7 +20,23 @@ const Page = db.define('page', {
   date: {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
+  },
+  
+  route: {
+    type: Sequelize.VIRTUAL,
+    get () {
+      return '/wiki/'+this.getDataValue('urlTitle');
+    }
+
   }
+
+  //  { getterMethods: {
+  //     route () {
+  //       return '/wiki/'+this.getDataValue('urlTitle');
+  //     }
+  //   }
+  // }
+  
 });
 
 
